@@ -1,0 +1,18 @@
+.title {
+  color: brown;
+}
+
+.new {
+  color: blue;
+  font-weight: bold;
+  font-size: 1.2em;
+  text-decoration: underline;
+  font-style: italic;
+  text-transform: uppercase;
+  background-color: lightyellow;
+  padding: 5px;
+}
+
+.f30 {
+  font-size: 30px;
+}
