@@ -46,7 +46,7 @@ Bu projeyi yerel makinenizde çalıştırmak için aşağıdaki adımları izley
     ```
     Uygulama genellikle `http://localhost:3000` adresinde açılacaktır.
 
-## İleri Geliştirmeler (Gelecek Planları)
+## İleri Geliştirmeler
 
 * [ ] TMDb film API'si ile entegrasyon.
 * [ ] React Router Dom kullanarak çok sayfalı yapılandırma (Film Detay Sayfası, Arama Sonuçları Sayfası vb.).
