@@ -1,78 +1,26 @@
-import { useEffect, useState } from "react";
-import Footer from "./components/Footer";
-import Header from "./components/Header";
-import Main from "./components/Main";
-import Logo from "./components/Logo";
-import Loading from "./components/Loading";
-import SearchForm from "./components/SearchForm";
-import WatchListButton from "./components/WatchListButton";
-import MovieList from "./components/MovieList";
-import WatchList from "./components/WatchList";
+import React from "react";
+import { createBrowserRouter, Router, RouterProvider } from "react-router";
+import Home from "./pages/Home";
+import Movies from "./pages/Movies";
+import MovieDetails from "./pages/MovieDetails";
+import MainLayout from "./layouts/MainLayout";
+import SearchResult from "./pages/SearchResult";
 
-const api_key = "72ce9793bea613d160578c8758d78473";
-const page = 1;
-const query = "batman";
-const language = "tr-TR";
+const routes = createBrowserRouter([
+  {
+    path: "/",
+    element: <MainLayout />,
+    children: [
+      { path: "/", element: <Home /> },
+      { path: "/movies", element: <Movies /> },
+      { path: "/movies/:id", element: <MovieDetails /> },
+      { path: "search/", element: <SearchResult /> },
+    ],
+  },
+]);
 
-export default function App() {
-  const [movies, setMovies] = useState([]);
-  const [watchListMovies, setWatchListMovies] = useState([]);
-  const [isWatchListOpen, setIsWatchListOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  // mounting => ilk renderda çalışır
-  // re-rendering => state değiştiğinde çalışır
-  // unmounting => component DOM'dan kaldırıldığında çalışır
-  // useEffect(() => {}, [state]); // state değiştiğinde çalışır
-
-  useEffect(() => {
-    async function getMovies() {
-      setLoading(true);
-      const response = await fetch(
-        `https://api.themoviedb.org/3/search/movie?api_key=${api_key}&query=${query}&page=${page}&language=${language}`
-      );
-      const data = await response.json();
-      setMovies(data.results);
-      setLoading(false);
-    }
-    getMovies();
-  }, []);
-
-  function handleAddToWatchList(movie) {
-    const isAddedToList = watchListMovies.map((i) => i.id).includes(movie.id);
-
-    if (!isAddedToList) {
-      setWatchListMovies((movies) => [...movies, movie]);
-    }
-  }
-
-  function handleRemoveFromWatchList(movie) {
-    setWatchListMovies((movies) => movies.filter((i) => i.id !== movie.id));
-  }
-
-  return (
-    <>
-      <Header>
-        <Logo />
-        <SearchForm />
-        <WatchListButton
-          movies={watchListMovies}
-          onSetIsWatchListOpen={setIsWatchListOpen}
-        />
-      </Header>
-      <Main>
-        <WatchList
-          movies={watchListMovies}
-          isWatchListOpen={isWatchListOpen}
-          onRemoveFromWatchList={handleRemoveFromWatchList}
-        />
-        {loading ? (
-          <Loading />
-        ) : (
-          <MovieList movies={movies} onAddToList={handleAddToWatchList} />
-        )}
-      </Main>
-      <Footer />
-    </>
-  );
+function App() {
+  return <RouterProvider router={routes} />;
 }
+
+export default App;
