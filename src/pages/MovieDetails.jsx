@@ -3,6 +3,10 @@ import { useParams } from "react-router";
 import Loading from "../components/Loading";
 import ErrorMessage from "../components/ErrorMessage";
 import SimilarMovies from "./SimilarMovies";
+import Actors from "../components/Actors";
+import { UserContext } from "../contexts/UserContext";
+import { useContext } from "react";
+
 const apiUrl = "https://api.themoviedb.org/3";
 const api_key = "72ce9793bea613d160578c8758d78473";
 const language = "tr-TR";
@@ -13,7 +17,10 @@ const MovieDetails = () => {
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const { addToWatchList, removeFromWatchList, watchList } =
+    useContext(UserContext);
 
+  const isAdded = watchList?.find((i) => i.id === movie?.id);
   useEffect(() => {
     async function getMovie() {
       try {
@@ -78,6 +85,19 @@ const MovieDetails = () => {
                   <span className="badge bg-warning text-dark fw-bold fs-6">
                     {Math.round(movie.vote_average * 10)}%
                   </span>
+                  <span className="badge bg-danger fs-6 ms-2 pointer">
+                    {isAdded ? (
+                      <i
+                        className="bi bi-heart-fill"
+                        onClick={() => removeFromWatchList(movie)}
+                      ></i>
+                    ) : (
+                      <i
+                        className="bi bi-heart"
+                        onClick={() => addToWatchList(movie)}
+                      ></i>
+                    )}
+                  </span>
                 </p>
                 {movie.overview && (
                   <p className="lead mt-4 overview-text">
@@ -105,37 +125,7 @@ const MovieDetails = () => {
           </div>
         </div>
       </div>
-
-      <div className="container my-5">
-        <div className="card border-0 shadow-sm">
-          <div className="card-header bg-primary text-white">
-            <h5 className="card-title mb-0">Kadro</h5>
-          </div>
-          <div className="card-body">
-            <div className="row g-3">
-              {movie.credits.cast.slice(0, 12).map((actor) => (
-                <div className="col-6 col-md-3 col-lg-2" key={actor.id}>
-                  <div className="actor-card">
-                    <img
-                      src={
-                        actor.profile_path
-                          ? `https://image.tmdb.org/t/p/original/${actor.profile_path}`
-                          : "https://via.placeholder.com/150"
-                      }
-                      alt={actor.name}
-                      className="img-fluid rounded actor-img"
-                    />
-                    <p className="text-center mt-2 mb-0 actor-name">
-                      {actor.name}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
+      <Actors actors={movie.credits.cast} />
       <SimilarMovies movieId={id} />
     </>
   );

@@ -64,8 +64,8 @@ export default function MovieDetails({ movieObj, onClose }) {
                 <p>Süre: {loadedMovie.runtime}</p>
                 <p>Ülke: {loadedMovie.production_countries[0].name}</p>
                 <p>Yapımcı: {loadedMovie.production_companies[0].name}</p>
-                <p>Yönetmen: {loadedMovie.credits.crew[0].name}</p>
-                <p>Senarist: {loadedMovie.credits.crew[1].name}</p>
+                <p>Yönetmen: {loadedMovie.credits.crew[0]?.name}</p>
+                <p>Senarist: {loadedMovie.credits.crew[1]?.name}</p>
                 <p>Türler:</p>
                 <ul className="list-unstyled d-flex flex-wrap">
                   {loadedMovie.genres.map((genre) => (

@@ -12,11 +12,11 @@ const language = "tr-TR";
 const SearchResult = () => {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [searchParams, setsearchParams] = useSearchParams();
+  const [error, setError] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
   const [totalPages, setTotalPages] = useState(0);
 
-  const query = searchParams.get("query");
+  const query = searchParams.get("q");
   const page = searchParams.get("page") || 1;
 
   useEffect(() => {
@@ -28,9 +28,11 @@ const SearchResult = () => {
         );
 
         if (!response.ok) {
-          throw new Error("API'den veri alınamadı");
+          throw new Error("Hata oluştu");
         }
+
         const data = await response.json();
+
         if (data.results) {
           setMovies(data.results);
           setTotalPages(data.total_pages);
@@ -39,6 +41,7 @@ const SearchResult = () => {
       } catch (error) {
         setError(error.message);
       }
+
       setLoading(false);
     }
 
@@ -56,7 +59,7 @@ const SearchResult = () => {
       <MovieList movies={movies} title={`Arama Sonuçları:${query}`} />
       <Pagination
         page={page}
-        setsearchParams={setsearchParams}
+        setSearchParams={setSearchParams}
         query={query}
         totalPages={totalPages}
       />
