@@ -4,11 +4,11 @@ export const ThemeContext = createContext();
 
 export function ThemeContextProvider({ children }) {
   const storedTheme = localStorage.getItem("theme");
-  const initialTheme = storedTheme || "light"; // JSON.parse kaldırıldı
+  const initialTheme = storedTheme || "light";
   const [theme, setTheme] = useState(initialTheme);
 
   useEffect(() => {
-    localStorage.setItem("theme", theme); // JSON.stringify kaldırıldı
+    localStorage.setItem("theme", theme);
   }, [theme]);
 
   return (

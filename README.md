@@ -1,32 +1,34 @@
 # React Movie App
 
-Bu proje, React kullanılarak geliştirilmiş basit bir film uygulamasıdır. Kullanıcıların filmleri keşfetmesine, arama yapmasına ve kendi izleme listelerine eklemesine olanak tanır.
+Bu proje, React kullanılarak geliştirilmiş interaktif bir film uygulamasıdır. Kullanıcılar filmleri keşfedebilir, favori listelerine film ekleyebilir, arama yapabilir ve kullanıcı hesabı oluşturup giriş yapabilir.
 
-## Özellikler
+## 🚀 Özellikler
 
-- Popüler filmleri görüntüleme (TMDb API entegrasyonu ile)
-- Filmleri arama
-- İzleme listesine film ekleme ve çıkarma
-- Film detaylarını görüntüleme
-- Basit ve kullanıcı dostu arayüz
-- Sayfa yönlendirmeleri (React Router Dom)
+- 🎬 Popüler filmleri listeleme (TMDb API ile)
+- 🔍 Film arama özelliği
+- ❤️ Favori listesi oluşturma ve yönetme
+- 📝 Giriş (Login) ve Kayıt (Register) sayfaları
+- ✅ Form girişlerinde özel `useInput` hook'u ile kontrol
+- ⚠️ `utils` altında form doğrulama (validation) sistemi
+- 🔁 React Router DOM ile sayfa yönlendirme
 
-## Kullanılan Teknolojiler
+## 🛠️ Kullanılan Teknolojiler
 
 - React.js
-- HTML5
-- CSS3
+- HTML5 & CSS3
 - TMDb API
-- React Router Dom
+- React Router DOM
+- JavaScript (ES6+)
 
-## Kurulum ve Çalıştırma
+## 💻 Kurulum ve Çalıştırma
 
-Bu projeyi yerel makinenizde çalıştırmak için aşağıdaki adımları izleyin:
+Projeyi yerel makinenizde çalıştırmak için:
 
-1. Bu depoyu klonlayın:
+1. Depoyu klonlayın:
 
    ```bash
    git clone https://github.com/arifshn/react-movie-app.git
+
    ```
 
 2. Proje dizinine gidin:
@@ -50,10 +52,3 @@ Bu projeyi yerel makinenizde çalıştırmak için aşağıdaki adımları izley
    yarn start
    ```
    Uygulama genellikle `http://localhost:3000` adresinde açılacaktır.
-
-## İleri Geliştirmeler
-
-- [x] TMDb film API'si ile entegrasyon
-- [x] React Router Dom kullanarak çok sayfalı yapılandırma (Film Detay Sayfası, Arama Sonuçları Sayfası vb.)
-- [ ] Kullanıcı kimlik doğrulama ve kişiselleştirilmiş favori listeleri
-- [ ] Daha gelişmiş arayüz ve kullanıcı deneyimi iyileştirmeleri

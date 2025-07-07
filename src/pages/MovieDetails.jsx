@@ -40,6 +40,7 @@ const MovieDetails = () => {
       }
 
       setLoading(false);
+      window.scrollTo(0, 0);
     }
 
     getMovie();
