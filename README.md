@@ -1,24 +1,29 @@
-# React Movie App
+# 🎬 React Movie App
 
-Bu proje, React kullanılarak geliştirilmiş interaktif bir film uygulamasıdır. Kullanıcılar filmleri keşfedebilir, favori listelerine film ekleyebilir, arama yapabilir ve kullanıcı hesabı oluşturup giriş yapabilir.
+Bu proje, React kullanılarak geliştirilmiş interaktif bir film uygulamasıdır. Kullanıcılar filmleri keşfedebilir, favori listelerine film ekleyebilir, arama yapabilir ve **Firebase Authentication** ile kullanıcı hesabı oluşturup giriş yapabilir.
 
 ## 🚀 Özellikler
 
-- 🎬 Popüler filmleri listeleme (TMDb API ile)
+- 🎥 Popüler filmleri listeleme (TMDb API)
 - 🔍 Film arama özelliği
-- ❤️ Favori listesi oluşturma ve yönetme
-- 📝 Giriş (Login) ve Kayıt (Register) sayfaları
+- ❤️ Favori listesi oluşturma ve yönetme (giriş yaptıktan sonra)
+- 📝 Giriş (Login) ve Kayıt (Register) sayfaları (Firebase Authentication ile)
 - ✅ Form girişlerinde özel `useInput` hook'u ile kontrol
-- ⚠️ `utils` altında form doğrulama (validation) sistemi
-- 🔁 React Router DOM ile sayfa yönlendirme
+- ⚠️ `utils` klasörü altında form doğrulama (validation) sistemi
+- 🔁 React Router DOM ile dinamik sayfa yönlendirme
+
+## 🔐 Kimlik Doğrulama (Authentication)
+
+Kullanıcılar Firebase Authentication kullanarak e-posta ve şifre ile kayıt olabilir ve giriş yapabilir. Oturum yönetimi Firebase üzerinden sağlanmaktadır.
 
 ## 🛠️ Kullanılan Teknolojiler
 
 - React.js
 - HTML5 & CSS3
-- TMDb API
-- React Router DOM
 - JavaScript (ES6+)
+- React Router DOM
+- Firebase Authentication
+- TMDb API
 
 ## 💻 Kurulum ve Çalıştırma
 

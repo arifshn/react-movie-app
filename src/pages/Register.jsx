@@ -1,27 +1,42 @@
-import { useContext, useRef, useState } from "react";
+import { useContext } from "react";
 import { ThemeContext } from "../contexts/ThemeContext";
-import App from "../App";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase";
 
 export default function Register() {
   const { theme } = useContext(ThemeContext);
   const cardColor = theme === "dark" ? "text-bg-dark" : "text-bg-light";
   const btnColor = theme === "dark" ? "light" : "dark";
 
-  function handleFormSubmit(e) {
+  async function handleFormSubmit(e) {
     e.preventDefault();
 
     const formData = new FormData(e.target);
-    console.log(formData.get("name"));
-    console.log(formData.get("email"));
-    console.log(formData.get("password"));
-    console.log(formData.get("repassword"));
-    console.log(formData.getAll("hobbies"));
+    const email = formData.get("email");
+    const password = formData.get("password");
+    const repassword = formData.get("repassword");
 
-    const hobbies = formData.getAll("hobbies");
-    const data = Object.fromEntries(formData.entries());
-    data.hobbies = hobbies;
-    console.log(data);
+    if (password !== repassword) {
+      alert("Şifreler eşleşmiyor!");
+      return;
+    }
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+      console.log("Kayıt başarılı:", user);
+      alert("Kayıt başarılı!");
+      e.target.reset();
+    } catch (error) {
+      console.error("Kayıt hatası:", error.message);
+      alert("Kayıt sırasında bir hata oluştu:\n" + error.message);
+    }
   }
+
   return (
     <div className="container py-3">
       <div className="row">
@@ -36,7 +51,7 @@ export default function Register() {
                       Name
                     </label>
                     <input
-                      type="name"
+                      type="text"
                       name="name"
                       id="name"
                       className="form-control"
@@ -69,7 +84,7 @@ export default function Register() {
                     </div>
                     <div className="col-md-6">
                       <div className="mb-3">
-                        <label htmlFor="password" className="form-label">
+                        <label htmlFor="repassword" className="form-label">
                           Re-Password
                         </label>
                         <input
@@ -80,47 +95,48 @@ export default function Register() {
                         />
                       </div>
                     </div>
-                    <div className="mb-3">
-                      <label htmlFor="hobbies" className="form-label">
-                        Hobiler
-                      </label>
-                      <div className={`card card-body border ${cardColor}`}>
-                        <div className="form-check">
-                          <input
-                            type="checkbox"
-                            name="hobbies"
-                            id="cars"
-                            className="form-check-input"
-                            value="cars"
-                          />
-                          <label htmlFor="cars" className="form-check-label">
-                            Cars
-                          </label>
-                        </div>
-                        <div className="form-check">
-                          <input
-                            type="checkbox"
-                            name="hobbies"
-                            id="books"
-                            className="form-check-input"
-                            value="books"
-                          />
-                          <label htmlFor="books" className="form-check-label">
-                            Books
-                          </label>
-                        </div>
-                        <div className="form-check">
-                          <input
-                            type="checkbox"
-                            name="hobbies"
-                            id="movies"
-                            className="form-check-input"
-                            value="movies"
-                          />
-                          <label htmlFor="movies" className="form-check-label">
-                            Movies
-                          </label>
-                        </div>
+                  </div>
+
+                  <div className="mb-3">
+                    <label htmlFor="hobbies" className="form-label">
+                      Hobiler
+                    </label>
+                    <div className={`card card-body border ${cardColor}`}>
+                      <div className="form-check">
+                        <input
+                          type="checkbox"
+                          name="hobbies"
+                          id="cars"
+                          className="form-check-input"
+                          value="cars"
+                        />
+                        <label htmlFor="cars" className="form-check-label">
+                          Cars
+                        </label>
+                      </div>
+                      <div className="form-check">
+                        <input
+                          type="checkbox"
+                          name="hobbies"
+                          id="books"
+                          className="form-check-input"
+                          value="books"
+                        />
+                        <label htmlFor="books" className="form-check-label">
+                          Books
+                        </label>
+                      </div>
+                      <div className="form-check">
+                        <input
+                          type="checkbox"
+                          name="hobbies"
+                          id="movies"
+                          className="form-check-input"
+                          value="movies"
+                        />
+                        <label htmlFor="movies" className="form-check-label">
+                          Movies
+                        </label>
                       </div>
                     </div>
                   </div>

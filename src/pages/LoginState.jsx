@@ -1,34 +1,56 @@
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { ThemeContext } from "../contexts/ThemeContext";
-import Input from "../components/Input";
-import useInput from "../hooks/useInput";
-import { hasMinLength, isEmail, isNotEmpty } from "../utils/validations";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase";
+import { useNavigate } from "react-router";
 
-export default function LoginState() {
+export default function Login() {
   const { theme } = useContext(ThemeContext);
   const cardColor = theme === "dark" ? "text-bg-dark" : "text-bg-light";
   const btnColor = theme === "dark" ? "light" : "dark";
+  const navigate = useNavigate();
+  const email = useRef();
+  const password = useRef();
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
 
-  const {
-    value: emailValue,
-    handleInputBlur: handleEmailBlur,
-    handleInputChange: handleEmailChange,
-    hasError: emailHasError,
-  } = useInput("", (value) => isEmail(value) && isNotEmpty(value));
-  const {
-    value: passwordValue,
-    handleInputBlur: handlePasswordBlur,
-    handleInputChange: handlePasswordChange,
-    hasError: passwordHasError,
-  } = useInput("", (value) => hasMinLength(value, 5));
-
-  function handleFormSubmit(e) {
+  async function handleFormSubmit(e) {
     e.preventDefault();
-    if (emailHasError || passwordHasError) {
+    setEmailError(false);
+    setPasswordError(false);
+    const emailVal = email.current.value;
+    const passwordVal = password.current.value;
+
+    const emailIsInValid = !emailVal.includes("@");
+    const passwordIsInValid = passwordVal.length <= 5;
+
+    if (emailIsInValid) {
+      setEmailError(true);
       return;
     }
-    console.log(emailValue, passwordValue);
+    if (passwordIsInValid) {
+      setPasswordError(true);
+      return;
+    }
+
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        emailVal,
+        passwordVal
+      );
+      const user = userCredential.user;
+      console.log("Giriş başarılı:", user);
+      navigate("/");
+    } catch (error) {
+      console.error("Giriş hatası:", error.message);
+      alert("Email veya şifre hatalı!");
+    }
+
+    email.current.value = "";
+    password.current.value = "";
   }
+
   return (
     <div className="container py-3">
       <div className="row">
@@ -37,27 +59,41 @@ export default function LoginState() {
             <div className="card-header">
               <h1 className="h4 mb-0">Login</h1>
               <div className="card-body">
-                <form onSubmit={handleFormSubmit}>
-                  <Input
-                    labelText="Email"
-                    id="email"
-                    name="email"
-                    error={emailHasError && "Geçerli Email Giriniz"}
-                    type="email"
-                    value={emailValue}
-                    onChange={handleEmailChange}
-                    onBlur={handleEmailBlur}
-                  />
-                  <Input
-                    labelText="Password"
-                    id="password"
-                    name="password"
-                    error={passwordHasError && "5 karakter giriniz"}
-                    type="password"
-                    value={passwordValue}
-                    onChange={handlePasswordChange}
-                    onBlur={handlePasswordBlur}
-                  />
+                <form onSubmit={handleFormSubmit} noValidate>
+                  <div className="mb-3">
+                    <label htmlFor="email" className="form-label">
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      ref={email}
+                      name="email"
+                      id="email"
+                      className="form-control"
+                    />
+                    {emailError && (
+                      <div className="invalid-feedback d-block">
+                        Geçersiz Email
+                      </div>
+                    )}
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="password" className="form-label">
+                      Password
+                    </label>
+                    <input
+                      type="password"
+                      ref={password}
+                      name="password"
+                      id="password"
+                      className="form-control"
+                    />
+                    {passwordError && (
+                      <div className="invalid-feedback d-block">
+                        5 karakter giriniz
+                      </div>
+                    )}
+                  </div>
                   <button className={`btn btn-outline-${btnColor}`}>
                     Submit
                   </button>

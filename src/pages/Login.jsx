@@ -1,6 +1,7 @@
 import { useContext, useRef, useState } from "react";
 import { ThemeContext } from "../contexts/ThemeContext";
-import App from "../App";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase";
 
 export default function Login() {
   const { theme } = useContext(ThemeContext);
@@ -12,7 +13,7 @@ export default function Login() {
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
 
-  function handleFormSubmit(e) {
+  async function handleFormSubmit(e) {
     e.preventDefault();
     setEmailError(false);
     setPasswordError(false);
@@ -31,11 +32,24 @@ export default function Login() {
       return;
     }
 
-    console.log(emailVal, passwordVal);
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        emailVal,
+        passwordVal
+      );
+      const user = userCredential.user;
+      console.log("Giriş başarılı:", user);
+      // İsteğe bağlı: yönlendirme veya toast
+    } catch (error) {
+      console.error("Giriş hatası:", error.message);
+      alert("Email veya şifre hatalı!");
+    }
 
     email.current.value = "";
     password.current.value = "";
   }
+
   return (
     <div className="container py-3">
       <div className="row">

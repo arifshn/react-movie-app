@@ -1,14 +1,16 @@
 import { Link, NavLink } from "react-router";
 import Logo from "./Logo";
 import SearchForm from "./SearchForm";
-import { use, useContext } from "react";
+import { useContext } from "react";
 import { ThemeContext } from "../contexts/ThemeContext";
 import ThemeSelector from "./ThemeSelector";
 import { UserContext } from "../contexts/UserContext";
+import { AuthContext } from "../contexts/AuthContext";
 
 export default function Navbar() {
   const { theme, setTheme } = useContext(ThemeContext);
   const { watchList } = useContext(UserContext);
+  const { user, logout } = useContext(AuthContext);
 
   return (
     <nav
@@ -43,17 +45,37 @@ export default function Navbar() {
             </li>
           </ul>
           <ul className="navbar-nav ms-auto">
-            <li className="nav-item">
-              <NavLink className="nav-link" aria-current="page" to="/login">
-                Login
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink className="nav-link" to="/register">
-                Register
-              </NavLink>
-            </li>
+            {user ? (
+              <>
+                <li className="nav-item">
+                  <span className="nav-link">
+                    {" "}
+                    Hoş geldin,{" "}
+                    {user.email.substring(0, user.email.indexOf("@"))}
+                  </span>
+                </li>
+                <li className="nav-item">
+                  <button className="nav-link btn btn-link" onClick={logout}>
+                    Logout
+                  </button>
+                </li>
+              </>
+            ) : (
+              <>
+                <li className="nav-item">
+                  <NavLink className="nav-link" aria-current="page" to="/login">
+                    Login
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink className="nav-link" to="/register">
+                    Register
+                  </NavLink>
+                </li>
+              </>
+            )}
           </ul>
+
           <SearchForm />
           <Link
             to="/watchlist"
